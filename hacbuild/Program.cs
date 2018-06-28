@@ -24,6 +24,24 @@ namespace hacbuild
         {
             Console.WriteLine("HACbuild - {0}", Assembly.GetExecutingAssembly().GetName().Version);
 
+            if(LoadKeys() )
+            {
+                Console.WriteLine("XCI Header Key loaded successfully:\n{0}", BitConverter.ToString(XCIManager.XCI_GAMECARDINFO_KEY));
+
+                byte[] keyHash = Program.SHA256.ComputeHash(XCIManager.XCI_GAMECARDINFO_KEY);
+
+                if (Enumerable.SequenceEqual<byte>(keyHash, XCIManager.XCI_GAMECARD_KEY_SHA256))
+                {
+                    Console.WriteLine("XCI Header Key is correct!");
+                } else { 
+                    Console.WriteLine("[WARN] Invalid XCI Header Key");
+                }
+
+            } else
+            {
+                Console.WriteLine("[WARN] Could not load XCI Header Key");
+            }
+
             // Configure AES
             AES128CBC.BlockSize = 128;
             AES128CBC.Mode = CipherMode.CBC;
@@ -115,14 +133,46 @@ namespace hacbuild
 
            
         }
+        static bool LoadKeys()
+        {
+            bool ret = false;
+            try
+            {
+                StreamReader file = new StreamReader("keys.txt");
 
+                string line;
+                while((line = file.ReadLine()) != null) 
+                {
+                    string[] parts = line.Split('=');
+                    if (parts.Length < 2) continue;
+
+                    string name = parts[0].Trim(" \0\n\r\t".ToCharArray());
+                    string key = parts[1].Trim(" \0\n\r\t".ToCharArray());
+
+                    //Console.WriteLine("{0} = {1}", name, key);
+
+                    if (name == "xci_header_key")
+                    {
+                        XCIManager.XCI_GAMECARDINFO_KEY = Utils.StringToByteArray(key);
+                        ret = true;
+                    }
+                }
+
+            } catch(Exception ex)
+            {
+                Console.WriteLine("[ERR] keys.txt is either missing or unaccessible.");
+                ret = false;
+            }
+            return ret;
+           
+        }
         static void PrintUsage()
         {
             Console.WriteLine("Usage: hacbuild.exe hfs0/xci input_folder output_file");
             Console.WriteLine("OR");
             Console.WriteLine("Usage: hacbuild.exe xci_auto input_folder output_file");
             Console.WriteLine("OR");
-            Console.WriteLine("Usage: hacbuild.exe read hfs0/xci input_file");
+            Console.WriteLine("Usage: hacbuild.exe read xci input_file");
         }
 
 
