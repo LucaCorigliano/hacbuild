@@ -27,6 +27,16 @@ The program will automatically seek a `keys.txt` file in the working directory i
 
 We have pushed hacbuild to a state where it can build valid XCI files, but there is still very much to do. Since we know the potential is there, we'd like people to contribute to the project.
 
+## Credits & useful links
+
+hacbuild was inspired by:
+- [hactool](https://github.com/SciresM/hactool) by SciresM
+- [NXTools](https://github.com/jakcron/NXTools) by jackron
+
+We'd also like to thank [SwitchBrew](http://switchbrew.org/index.php?title=Main_Page) for their extensive research and documentation of the Nintendo Switch.
+
+
+
 
 
 
