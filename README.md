@@ -21,6 +21,12 @@ The program will automatically seek a `keys.txt` file in the working directory i
 - Can't generate a valid RSA signature for the XCI, so they can only be loaded with kernel patches
 - Still can't figure out the usefulnes of some fields
 - Due to NCAs signature checks we still can't modify games (for example eShop titles can be mashed into a XCI but they will still require a ticket)
+- The coding is quite dirty and it lacks pretty much any exception handling. Use with care
+
+## Help needed 
+
+We have pushed hacbuild to a state where it can build valid XCI files, but there is still very much to do. Since we know the potential is there, we'd like people to contribute to the project.
+
 
 
 
