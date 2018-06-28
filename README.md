@@ -9,7 +9,7 @@ hacbuild is a Work-In-Progress utility to rebuild *Switch GameCards* (XCI) from 
 - `hacbuild xci_auto <in_folder> <out_file>` Builds a XCI from a directory containing the folders 'normal', 'secure', 'update' and 'logo' if needed. 'game_info.ini' is also used.
 - `hacbuild read xci <in_file>` Reads a XCI, displays info on the console and dumps the game .ini configuration (for `game_info.ini`) in the working directory.
 
-The program will automatically seek a `keys.txt` file in the working directory in order to gather the only key needed: `XCI Header Key`
+The program will automatically seek a `keys.txt` file in the working directory in order to gather the only key needed: `XCI Header Key` (`xci_header_key = 01C5...`)
 
 ### Functionalities
 - Rebuilds the XCI format 
