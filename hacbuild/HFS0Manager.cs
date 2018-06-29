@@ -181,7 +181,12 @@ namespace hacbuild
                 fileEntry_relativeOffset += paddedSize;
 
 
-                fileEntry.HashedSize = Math.Min(0x200, Convert.ToUInt32(fileEntry.Size)); // TODO Is HashedSize in bytes or Media Blocks? 
+
+
+                if (fileEntry.Size > 0x200)
+                    fileEntry.HashedSize = 0x200;
+                else
+                    fileEntry.HashedSize = Convert.ToUInt32(fileEntry.Size);
 
                 byte[] dataToHash = new byte[fileEntry.HashedSize];
                 inputFSReader.Read(dataToHash, 0, dataToHash.Length);
