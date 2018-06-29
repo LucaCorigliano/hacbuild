@@ -160,7 +160,7 @@ namespace hacbuild
 
             header.StringTableSize = 0;
 
-            UInt32 fileEntry_relativeOffset = 0;
+            UInt64 fileEntry_relativeOffset = 0;
             // Building stringtable
 
             
@@ -177,7 +177,7 @@ namespace hacbuild
                 fileEntry.Offset = Convert.ToUInt64(fileEntry_relativeOffset);
                 fileEntry.Size = Convert.ToUInt64(inputFS.Length);
 
-                uint paddedSize = Convert.ToUInt32( Math.Ceiling((double)fileEntry.Size / (double)0x200) * 0x200);
+                UInt64 paddedSize = Convert.ToUInt64( Math.Ceiling((double)fileEntry.Size / (double)0x200) * 0x200);
                 fileEntry_relativeOffset += paddedSize;
 
 
