@@ -246,7 +246,7 @@ namespace hacbuild
 
             // Read root.hfs0 raw (for header size and hash)
             byte[] rootHeader = HFS0Manager.GetHFS0Header(rootPath); 
-            header.HFS0HeaderSize = Convert.ToUInt32( rootHeader.Length);
+            header.HFS0HeaderSize = Convert.ToUInt64( rootHeader.Length);
 
             // hfs0 should be 0x200 aligned in order to properly work. // TODO should it?
             if(header.HFS0HeaderSize % 0x200 != 0)
@@ -272,20 +272,20 @@ namespace hacbuild
 
                 if (fileName == "secure")
                 {
-                    UInt32 secureOffset = Convert.ToUInt32(HFS0_START + header.HFS0HeaderSize + rootFileEntries[partitionIndex].Offset);
+                    UInt64 secureOffset = Convert.ToUInt64(HFS0_START + header.HFS0HeaderSize + rootFileEntries[partitionIndex].Offset);
                     if (secureOffset % 0x200 != 0)
                     {
                         Console.WriteLine("[WARN] secure.hfs0 is not 0x200 aligned.");
                     }
                     // This is fine since we force partition order
-                    header.SecureOffset = header.NormalAreaEndAddress = (UInt32)(secureOffset / 0x200);
+                    header.SecureOffset = header.NormalAreaEndAddress = Convert.ToUInt32(secureOffset / 0x200);
                 }
 
                 partitionIndex++;
             }
             header.HFS0Offset = HFS0_START;
 
-            UInt32 CardSize = Convert.ToUInt32(HFS0_START + (ulong)(new FileInfo(rootPath).Length));
+            UInt64 CardSize = Convert.ToUInt64(HFS0_START + (ulong)(new FileInfo(rootPath).Length));
             if (CardSize % 0x200 != 0)
             {
                 Console.WriteLine("[WARN] card size is not 0x200 aligned.");

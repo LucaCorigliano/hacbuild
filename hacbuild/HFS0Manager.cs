@@ -204,11 +204,11 @@ namespace hacbuild
             }
 
             // Calculate padding fo alignment
-            uint bytesWrittenUntilNow = HFS0_HEADER_LENGTH + (HFS0_ENTRY_LENGTH * header.NumberOfFiles) + header.StringTableSize;
-            uint bytesWrittenUntilNowPadded = Convert.ToUInt32(Math.Ceiling((double)bytesWrittenUntilNow / (double)0x200) * 0x200);
-            uint bytesWrittenUntilNowDif = bytesWrittenUntilNowPadded - bytesWrittenUntilNow;
+            ulong bytesWrittenUntilNow = HFS0_HEADER_LENGTH + (HFS0_ENTRY_LENGTH * header.NumberOfFiles) + header.StringTableSize;
+            ulong bytesWrittenUntilNowPadded = Convert.ToUInt64(Math.Ceiling((double)bytesWrittenUntilNow / (double)0x200) * 0x200);
+            ulong bytesWrittenUntilNowDif = bytesWrittenUntilNowPadded - bytesWrittenUntilNow;
 
-            header.StringTableSize += bytesWrittenUntilNowDif;
+            header.StringTableSize += Convert.ToUInt32(bytesWrittenUntilNowDif);
 
             bw.Write(Utils.StructureToByteArray(header));
             foreach(hfs0_file_entry fileEntry in fileEntries)
@@ -221,7 +221,7 @@ namespace hacbuild
                 bw.Write((byte)0x00);
             }
             // Fill padding
-            for (int i = 0; i < bytesWrittenUntilNowDif; i++)
+            for (ulong i = 0; i < bytesWrittenUntilNowDif; i++)
             {
                 bw.Write((byte)0x0);
             }
@@ -234,11 +234,11 @@ namespace hacbuild
                 while((count = stream.Read(buffer, 0, buffer.Length)) > 0)
                     bw.Write(buffer, 0, count);
 
-                uint paddedLength = Convert.ToUInt32(Math.Ceiling((double)stream.Length / (double)0x200) * 0x200);
+                ulong paddedLength = Convert.ToUInt64( Math.Ceiling((double)stream.Length / (double)0x200) * 0x200 );
 
-                uint difference = paddedLength - (uint)stream.Length;
+                ulong difference = paddedLength - Convert.ToUInt64(stream.Length);
 
-                for(int i = 0; i < difference; i++)
+                for(ulong i = 0; i < difference; i++)
                 {
                     bw.Write((byte)0x0);
                 }
